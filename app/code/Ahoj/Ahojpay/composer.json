@@ -1,0 +1,22 @@
+{
+    "name": "ahoj/ahojpay",
+    "description": "",
+    "license": "proprietary",
+    "authors": [
+        {
+            "email": "info@wame.sk",
+            "name": "Wame.sk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files":
+        [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Ahoj\\Ahojpay\\": ""
+        }
+    }
+}

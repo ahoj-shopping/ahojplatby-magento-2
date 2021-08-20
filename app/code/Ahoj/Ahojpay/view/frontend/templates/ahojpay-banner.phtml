@@ -1,0 +1,24 @@
+<?php /** @var \Ahoj\Ahojpay\Block\AhojPay $block */?>
+<?php
+$price = $block->getCurrentProduct()->getFinalPrice();
+$promotionInfo = $block->getPromotionInfo();
+
+//echo $block->getSt();
+
+if($promotionInfo != "") {
+    /* zobrazenie bannera v detaile produktu */
+    if ($block->getCurrentProduct()->getTypeId() == "configurable") {
+        $productTypeInstance = $block->getCurrentProduct()->getTypeInstance();
+        $usedProducts = $productTypeInstance->getUsedProducts($block->getCurrentProduct());
+        $value = 0;
+        foreach ($usedProducts as $child) {
+            if (floatval($child->getPrice()) >= 5) {
+                $value = $child->getPrice();
+            }
+        }
+        $block->productBannerDetailPage($value);
+    } else {
+        $block->productBannerDetailPage($price);
+    }
+}
+?>

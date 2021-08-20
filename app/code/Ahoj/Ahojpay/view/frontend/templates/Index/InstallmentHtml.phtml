@@ -1,0 +1,8 @@
+<?php
+$uniModulName = "GoPay";
+$subMethod = "";
+require_once(BP."/UniModul/UniAdapterModel.php");
+$model = new UniAdapterModel(null, null, null, null, null, null, null, null, null, array(),
+	$uniModulName, $subMethod);
+echo($model->getInstallmentHtml());
+?>

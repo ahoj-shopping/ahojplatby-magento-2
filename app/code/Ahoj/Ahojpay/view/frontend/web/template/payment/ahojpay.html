@@ -1,0 +1,44 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+	<div class="payment-method-title field choice">
+		<input class="radio"
+			   data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"
+			   name="payment[method]"
+			   type="radio"/>
+		<label class="label" data-bind="attr: {'for': getCode()}"><span data-bind="text: getTitle()"></span></label>
+		<img alt="AhojPay" height="55" src="http://188.166.115.176/media/ahoj.svg" style="vertical-align: middle; margin-left: 18px" width="70"/>
+	</div>
+	<div class="payment-method-content">
+		<label class="label" data-bind="attr: {'for': getCode()}"></label>
+		<p id="product-banner-wrapper"><span data-bind="text: getInstructions()"></span></p>
+		<!-- ko foreach: getRegion('messages') -->
+		<!-- ko template: getTemplate() --><!-- /ko -->
+		<!--/ko-->
+		<div class="payment-method-billing-address">
+			<!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+			<!-- ko template: getTemplate() --><!-- /ko -->
+			<!--/ko-->
+		</div>
+		<div class="checkout-agreements-block">
+			<!-- ko foreach: $parent.getRegion('before-place-order') -->
+			<!-- ko template: getTemplate() --><!-- /ko -->
+			<!--/ko-->
+		</div>
+
+
+		<div class="actions-toolbar">
+			<div class="primary">
+				<button class="action primary checkout"
+						data-bind="
+					click: placeOrder,
+					attr: {title: $t('Place Order')},
+					css: {disabled: !isPlaceOrderActionAllowed()},
+					enable: (getCode() == isChecked())
+					"
+						disabled
+						type="submit">
+					<span>Odoslať objednávku s povinnosťou platby</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

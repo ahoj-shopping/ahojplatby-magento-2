@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+		<script src="https://eshop.ahojsplatky.sk/merchant/plugin/ahojpay.js" src_type="url"/>
+	</head>
+    <body>
+		<referenceContainer name="product.info.main">
+			<block after="product.info.price" class="Ahoj\Ahojpay\Block\AhojPay" name="ahojpay-product-banner" template="Ahoj_Ahojpay::ahojpay-banner.phtml"/>
+		</referenceContainer>
+	</body>
+</page>

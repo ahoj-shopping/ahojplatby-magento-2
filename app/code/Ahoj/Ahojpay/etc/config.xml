@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<payment>
+			<ahojpay translate='title'>
+				<active>0</active>
+				<model>Ahoj\Ahojpay\Model\Payment\Ahojpay</model>
+				<order_status>pending</order_status>
+				<title>Ahoj - Kúp teraz, zaplať o 30 dní</title>
+				<allowspecific>0</allowspecific>
+				<group>offline</group>
+			</ahojpay>
+		</payment>
+	</default>
+</config>
