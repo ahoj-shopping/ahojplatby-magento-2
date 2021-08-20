@@ -4,3 +4,5 @@ Kúp teraz, zaplať neskôr. Revolučné platobné riešenie mení svet online n
 
 
 [Stiahnuť aktuálnu verziu modulu](https://github.com/ahoj-shopping/ahojplatby-magento-2/releases/latest)
+
+[Inštalačná príručka pre Magento 2](https://github.com/ahoj-shopping/ahojplatby-magento-2/blob/master/README_AhojPay.pdf)
