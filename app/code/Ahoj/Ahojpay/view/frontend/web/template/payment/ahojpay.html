@@ -5,7 +5,7 @@
 			   name="payment[method]"
 			   type="radio"/>
 		<label class="label" data-bind="attr: {'for': getCode()}"><span data-bind="text: getTitle()"></span></label>
-		<img alt="AhojPay" height="55" src="http://188.166.115.176/media/ahoj.svg" style="vertical-align: middle; margin-left: 18px" width="70"/>
+		<img class="payment-icon" data-bind="attr: { src: require.toUrl('Ahoj_Ahojpay/images/ahoj.svg'), alt: $t('Ahoj Platby') }" height="55" style="vertical-align: middle; margin-left: 18px" width="70" />
 	</div>
 	<div class="payment-method-content">
 		<label class="label" data-bind="attr: {'for': getCode()}"></label>
