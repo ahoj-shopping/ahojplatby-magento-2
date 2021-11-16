@@ -35,7 +35,7 @@ class Index extends \Magento\Framework\App\Action\Action
     /* action po observeri - ziskanie url pre ahoj api pri presmerovani */
     public function execute()
     {
-        $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $orderDatamodel = $objectManager->get('Magento\Sales\Model\Order')->getCollection()->getLastItem();
         $orderId = $orderDatamodel->getId();
         $order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);

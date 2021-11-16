@@ -7,41 +7,75 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\ObjectManager;
 use Ahoj\Ahojpay\Block\AhojPay;
+use Ahoj\Ahojpay\Block\Rozlozto;
 
 class DisablePaymentMethod implements ObserverInterface
 {
 
     /**
-     * @var \Ahoj\Ahojpay\Block\AhojPay
+     * @var AhojPay
      */
     protected $_ahojpay;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger, \Ahoj\Ahojpay\Block\AhojPay $ahojPay)
+    /**
+     * @var Rozlozto
+     */
+    protected $_rozlozto;
+
+    /**
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param AhojPay $ahojPay
+     * @param Rozlozto $rozlozto
+     */
+    public function __construct(
+        \Psr\Log\LoggerInterface $logger,
+        AhojPay $ahojPay,
+        Rozlozto $rozlozto
+    )
     {
         $this->_logger = $logger;
         $this->_ahojpay = $ahojPay;
+        $this->_rozlozto = $rozlozto;
     }
 
-    /* skrytie metody, ak neplatia podmienky pre zobrazenie platby */
+    /**
+     * Skrytie metody, ak neplatia podmienky pre zobrazenie platby
+     *
+     * @param Observer $observer
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
 
         $grandTotal = $cart->getQuote()->getGrandTotal();
-        if($this->_ahojpay->getPromotionInfo() && $this->_ahojpay->isAvailable($grandTotal)) {
-            if($observer->getEvent()->getMethodInstance()->getCode() == "ahojpay")
-            {
+        $checkResult = $observer->getEvent()->getResult();
+        $checkResult->setData('is_available', true);
+
+        //
+        if ($this->_ahojpay->getPromotionInfo() && $this->_ahojpay->isAvailable($grandTotal)) {
+            if ($observer->getEvent()->getMethodInstance()->getCode() == "ahojpay") {
                 $checkResult = $observer->getEvent()->getResult();
                 $checkResult->setData('is_available', true);
             }
         } else {
-            if($observer->getEvent()->getMethodInstance()->getCode() == "ahojpay")
-            {
+            if ($observer->getEvent()->getMethodInstance()->getCode() == "ahojpay") {
+                $checkResult = $observer->getEvent()->getResult();
+                $checkResult->setData('is_available', false);
+            }
+        }
+
+        //
+        if ($this->_ahojpay->getPromotionInfo() && $this->_rozlozto->isAvailable($grandTotal)) {
+            if ($observer->getEvent()->getMethodInstance()->getCode() == "rozlozto") {
+                $checkResult = $observer->getEvent()->getResult();
+                $checkResult->setData('is_available', true);
+            }
+        } else {
+            if ($observer->getEvent()->getMethodInstance()->getCode() == "rozlozto") {
                 $checkResult = $observer->getEvent()->getResult();
                 $checkResult->setData('is_available', false);
             }
         }
     }
-
 }

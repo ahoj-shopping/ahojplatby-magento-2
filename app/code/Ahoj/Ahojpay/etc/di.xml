@@ -9,4 +9,10 @@
         <plugin disabled="false" name="Ahoj_AhojPay_ConfigurableSkuSwitch_Renderer_Configurable" sortOrder="10"
                 type="Ahoj\Ahojpay\Plugin\Renderer\Configurable"/>
     </type>
+
+    <type name="Ahoj\Ahojpay\Controller\Calculation\Index">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session</argument>
+        </arguments>
+    </type>
 </config>

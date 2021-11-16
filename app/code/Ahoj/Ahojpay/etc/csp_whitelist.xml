@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="ahojpay-script-eshop" type="host">https://eshop.ahojsplatky.sk</value>
+                <value id="ahojpay-script-pilot" type="host">https://eshop.pilot.ahojsplatky.sk</value>
+                <value id="ahojpay-script-gtm" type="host">*.googletagmanager.com</value>
+                <value id="ahojpay-script-habi" type="host">*.habitable.co</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="ahojpay-connect-eshop" type="host">https://eshop.ahojsplatky.sk</value>
+                <value id="ahojpay-connect-pilot" type="host">https://eshop.pilot.ahojsplatky.sk</value>
+                <value id="ahojpay-connect-habi" type="host">*.habitable.co</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="ahojpay-style-eshop" type="host">https://eshop.ahojsplatky.sk</value>
+                <value id="ahojpay-style-pilot" type="host">https://eshop.pilot.ahojsplatky.sk</value>
+                <value id="ahojpay-style-gapis" type="host">*.googleapis.com</value>
+                <value id="unsafe_inline" type="host">unsafe-inline</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="ahojpay-img-eshop" type="host">https://eshop.ahojsplatky.sk</value>
+                <value id="ahojpay-img-pilot" type="host">https://eshop.pilot.ahojsplatky.sk/</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="ahojpay-font-eshop" type="host">https://eshop.ahojsplatky.sk/</value>
+                <value id="ahojpay-font-pilot" type="host">https://eshop.pilot.ahojsplatky.sk/</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

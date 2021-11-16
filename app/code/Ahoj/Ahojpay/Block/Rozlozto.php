@@ -4,18 +4,20 @@ namespace Ahoj\Ahojpay\Block;
 
 require_once(BP . "/UniModul/ahoj-pay.php");
 
-use Ahoj\ApiErrorException;
 use Ahoj\Ahojpay\Block\EshopData;
 use Ahoj\Ahojpay\Block\Data;
+use Ahoj\ApiErrorException;
+use Exception;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Model\Order;
 
+/* metody AhojPay api */
 
-/**
- * Metody AhojPay api
- */
-class AhojPay extends \Magento\Framework\View\Element\Template
+class Rozlozto extends Template
 {
     protected $_registry;
 
@@ -44,11 +46,11 @@ class AhojPay extends \Magento\Framework\View\Element\Template
      */
     const PROMOTION_CODE_ROZLOZTO = 'SP_SPLIT_IT';
 
-    public function __construct(\Magento\Framework\View\Element\Template\Context $context,
-                                \Ahoj\Ahojpay\Block\EshopData                    $eshopData,
-                                \Ahoj\Ahojpay\Block\Data                         $dataBlock,
-                                \Ahoj\Ahojpay\Helper\Data                        $ahojHelper,
-                                \Magento\Framework\Registry                      $registry
+    public function __construct(Context                       $context,
+                                \Ahoj\Ahojpay\Block\EshopData $eshopData,
+                                \Ahoj\Ahojpay\Block\Data      $dataBlock,
+                                \Ahoj\Ahojpay\Helper\Data     $ahojHelper,
+                                Registry                      $registry
     )
     {
         parent::__construct($context);
@@ -67,6 +69,7 @@ class AhojPay extends \Magento\Framework\View\Element\Template
      * Inicializacia eshopu s ahoj
      *
      * @return array|void|null
+     * @throws ApiErrorException
      */
     public function getPromotionInfo()
     {
@@ -74,8 +77,8 @@ class AhojPay extends \Magento\Framework\View\Element\Template
             $ahojpay = $this->connection();
             $promotionInfo = $ahojpay->getPromotionInfo();
             return $promotionInfo;
-        } catch (ApiErrorException $e) {
-            print_r($e->getMessage()); // Error handling
+        } catch (Exception $e) {
+            // Error handling
         }
     }
 
@@ -89,7 +92,6 @@ class AhojPay extends \Magento\Framework\View\Element\Template
             print_r($e->getMessage()); // Error handling
         }
     }
-
 
     public function getCalculations($totalPrice)
     {
@@ -124,14 +126,14 @@ class AhojPay extends \Magento\Framework\View\Element\Template
             echo $ahojpay->generateInitJavaScriptHtml();
             echo $ahojpay->generateProductBannerHtml($price);
         } catch (ApiErrorException $e) {
-            print_r($e->getMessage()); // Error handling
+            // Error handling
         }
     }
 
     public function getPromotion($applicationParams)
     {
         $ahojpay = $this->connection();
-        $applicationResult = $ahojpay->createApplication($applicationParams, self::PROMOTION_CODE_ODLOZTO);
+        $applicationResult = $ahojpay->createApplication($applicationParams, self::PROMOTION_CODE_ROZLOZTO);
         $applicationUrl = $applicationResult['applicationUrl'];
     }
 
@@ -142,7 +144,6 @@ class AhojPay extends \Magento\Framework\View\Element\Template
             echo $ahojpay->generateInitJavaScriptHtml();
             echo $ahojpay->generatePaymentMethodDescriptionHtml($price);
         } catch (ApiErrorException $e) { // Error handling
-            print_r($e->getMessage()); // Error handling
         }
     }
 
@@ -156,8 +157,6 @@ class AhojPay extends \Magento\Framework\View\Element\Template
 
     /**
      * Stav ziadosti a zmena stavu objednavky na zaklade stavu z ahoj splatky
-     *
-     * @throws \Exception
      */
     public function getState()
     {
@@ -171,11 +170,10 @@ class AhojPay extends \Magento\Framework\View\Element\Template
                 $orderId = (int)$row['order_id'];
                 $applicationState = $ahojpay->getApplicationState($contractNumber);
                 $order = $objectManager->create('\Magento\Sales\Model\Order')->loadByIncrementId($orderId);
-
                 if ($applicationState == "DRAFT") {
                     $orderState = $this->_ahojHelper->getDraftStatus();
                     if (empty($orderState)) {
-                        $orderState = \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT;
+                        $orderState = Order::STATE_PENDING_PAYMENT;
                     }
                     $order->setState($orderState)->setStatus($orderState);
                     $order->save();
@@ -184,7 +182,7 @@ class AhojPay extends \Magento\Framework\View\Element\Template
                     /* podpisana ziadost v ahoj */
                     $orderState = $this->_ahojHelper->getSignedStatus();
                     if (empty($orderState)) {
-                        $orderState = \Magento\Sales\Model\Order::STATE_PROCESSING;
+                        $orderState = Order::STATE_PROCESSING;
                     }
                     $order->setState($orderState)->setStatus($orderState);
                     $order->addStatusToHistory($order->getStatus(), 'Ahoj.shopping platba bola schválená, stav objednávky bol automaticky aktualizovaný na: ' . $orderState);
@@ -194,45 +192,33 @@ class AhojPay extends \Magento\Framework\View\Element\Template
                     /* podpisana ziadost v ahoj */
                     $orderState = $this->_ahojHelper->getCanceledStatus();
                     if (empty($orderState)) {
-                        $orderState = \Magento\Sales\Model\Order::STATE_CANCELED;
+                        $orderState = Order::STATE_CANCELED;
                     }
                     $order->setState($orderState)->setStatus($orderState);
                     $order->addStatusToHistory($order->getStatus(), 'Ahoj.shopping platba bola zamietnutá, stav objednávky bol automaticky aktualizovaný na: ' . $orderState);
                     $order->save();
-                    $this->_dataBlock->deleteOrder($orderId);
                 } else {
                     /* ak je iny stav, nic sa neudeje */
                 }
+
+                //exit();
             }
-        } catch (ApiErrorException $e) {
-            print_r($e->getMessage()); // Error handling
+        } catch (Exception $e) {
         }
     }
 
-    /**
-     * Zobrazenie popisu platobnej metody Ahoj
-     *
-     * @param $totalPrice
-     * @return bool
-     */
-    public function isAvailable($totalPrice, $promotionInfo = self::PROMOTION_CODE_ODLOZTO)
+    /* zobrazenie popisu platobnej metody Ahoj */
+    public function isAvailable($totalPrice, $promotionInfo = self::PROMOTION_CODE_ROZLOZTO)
     {
         $ahojpay = $this->connection();
         $isPaymentMethodAvailable = $ahojpay->isAvailableForTotalPrice($totalPrice, $promotionInfo);
         return $isPaymentMethodAvailable;
     }
 
-    /**
-     * Vytvorenie url pre ahoj api vzhladom na obsah objednavky
-     *
-     * @param $applicationParams
-     * @param string $promotion_code
-     * @return mixed
-     */
-    public function createApplication2($applicationParams, $promotion_code = self::PROMOTION_CODE_ODLOZTO)
+    /* vytvorenie url pre ahoj api vzhladom na obsah objednavky */
+    public function createApplication2($applicationParams, $promotion_code = self::PROMOTION_CODE_ROZLOZTO)
     {
         $ahojpay = $this->connection();
-
         $applicationResult = $ahojpay->createApplication($applicationParams, $promotion_code);
         $applicationUrl = $applicationResult['applicationUrl'];
 
@@ -258,7 +244,7 @@ class AhojPay extends \Magento\Framework\View\Element\Template
         $asset = $this->assetRepository->createAsset($fileId, $params);
         try {
             return $asset->getSourceFile();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

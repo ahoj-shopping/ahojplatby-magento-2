@@ -9,7 +9,7 @@
 
 #### Po inštalácií je potrebné povoliť modul prostredníctvom príkazu:
 
-$ php bin/magento module:enable Ahoj_AhojPay
+$ php bin/magento module:enable Ahoj_Ahojpay
 $ php bin/magento setup:upgrade
 $ php bin/magento setup:db-schema:upgrade
 $ php bin/magento cron:run --group default

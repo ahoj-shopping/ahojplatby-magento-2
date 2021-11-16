@@ -5,15 +5,15 @@ $promotionInfo = $block->getPromotionInfo();
 
 //echo $block->getSt();
 
-if($promotionInfo != "") {
+if ($promotionInfo != "") {
     /* zobrazenie bannera v detaile produktu */
     if ($block->getCurrentProduct()->getTypeId() == "configurable") {
         $productTypeInstance = $block->getCurrentProduct()->getTypeInstance();
         $usedProducts = $productTypeInstance->getUsedProducts($block->getCurrentProduct());
         $value = 0;
         foreach ($usedProducts as $child) {
-            if (floatval($child->getPrice()) >= 5) {
-                $value = $child->getPrice();
+            if ((float)$child->getFinalPrice() >= 5) {
+                $value = $child->getFinalPrice();
             }
         }
         $block->productBannerDetailPage($value);
@@ -21,4 +21,3 @@ if($promotionInfo != "") {
         $block->productBannerDetailPage($price);
     }
 }
-?>

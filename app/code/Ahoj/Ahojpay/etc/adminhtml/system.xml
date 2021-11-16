@@ -3,44 +3,64 @@
 	<system>
 		<section id="payment" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1000" translate="label">
 			<group id="ahojpay" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
-				<label>AhojPay</label>
-				<field id="active" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select">
-					<label>Enabled</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-				</field>
-				<field id="title" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text">
-					<label>Title</label>
-				</field>
+				<label>Ahoj.shopping</label>
+                <comment><![CDATA[<div class="ahojpay-payment-logo"></div><div class="ahojpay-payment-text">Ahoj, kúp teraz, zaplať neskôr.</div>]]></comment>
 
-				<field id="activationKey" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
-					<label>Activation Key</label>
-				</field>
+                <!--<field id="active" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>-->
 
-				<field id="businessPlace" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
-					<label>Business Place</label>
-				</field>
+                <field id="activationKey" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text">
+                    <label>Bezpečnostný kľúč</label>
+                    <comment><![CDATA[Autorizačný kľúč predajného miesta ]]></comment>
+                </field>
 
-				<field id="isTest" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="70" translate="label" type="select">
-					<label>Config mode</label>
-					<options><option label="test">1</option><option label="prod">0</option></options>
-				</field>
+                <field id="businessPlace" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
+                    <label>Číslo obchodného miesta</label>
+                    <comment><![CDATA[Identifikátor E-shopu v rámci produktov Ahoj platby pridelený v priebehu integrácie E-shopu]]></comment>
+                </field>
 
-				<field id="allowspecific" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="400" translate="label" type="allowspecific">
-					<label>Payment from Applicable Countries</label>
-					<source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-				</field>
-				<field id="specificcountry" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="500" translate="label" type="multiselect">
-					<label>Payment from Applicable Countries</label>
-					<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-					<can_be_empty>1</can_be_empty>
-				</field>
+                <field id="isTest" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label" type="select">
+                    <label>Prostredie</label>
+                    <options><option label="test">1</option><option label="prod">0</option></options>
+                    <comment><![CDATA[Nastavte si prostredie testovacie „test“ alebo produkčné „prod“]]></comment>
+                </field>
 
-				<field id="sort_order" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="600" translate="label" type="text">
-					<label>Sort Order</label>
-				</field>
+                <field id="order_status_pending" translate="label comment" type="select" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Spracováva sa Ahoj platba</label>
+                    <source_model>Magento\Sales\Model\ResourceModel\Order\Status\Collection</source_model>
+                    <config_path>payment/ahojpay/order_status_pending</config_path>
+                    <comment><![CDATA[Čaká sa na Ahoj platbu, objednávka sa ešte nevybavuje]]></comment>
+                </field>
+
+                <field id="order_status_processing" translate="label comment" type="select" sortOrder="60"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schválená Ahoj platba</label>
+                    <source_model>Magento\Sales\Model\ResourceModel\Order\Status\Collection</source_model>
+                    <config_path>payment/ahojpay/order_status_processing</config_path>
+                    <comment><![CDATA[Ahoj platba bola schválená, môžete expedovať tovar]]></comment>
+                </field>
+
+                <field id="order_status_canceled" translate="label comment" type="select" sortOrder="70"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Zamietnutá Ahoj platba</label>
+                    <source_model>Magento\Sales\Model\ResourceModel\Order\Status\Collection</source_model>
+                    <config_path>payment/ahojpay/order_status_canceled</config_path>
+                    <comment><![CDATA[Ahoj platba bola zamietnutá, zrušte objednávku]]></comment>
+                </field>
+
+                <!--<field id="logger" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100" translate="label" type="select">
+                    <label>Enable Logger</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Súbor protokolu sa nachádza v štandardnom adresári protokolu pre inštaláciu aplikácie Magento. V predvolenom nastavení je to {magento-root-directory}/var/log/ahojpay.log]]></comment>
+                </field>-->
+
+                <include path="Ahoj_Ahojpay::system/ahojpay.xml"/>
+                <include path="Ahoj_Ahojpay::system/rozlozto.xml"/>
 
 			</group>
-
 		</section>
 	</system>
 </config>

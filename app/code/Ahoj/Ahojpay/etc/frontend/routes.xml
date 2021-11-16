@@ -4,5 +4,11 @@
 		<route frontName="Ahojpay" id="Ahojpay">
 			<module name="Ahoj_Ahojpay"/>
 		</route>
+        <route frontName="Rozlozto" id="rozlozto">
+            <module name="Ahoj_Ahojpay"/>
+        </route>
+        <route frontName="Calculation" id="calculation">
+            <module name="Ahoj_Ahojpay"/>
+        </route>
 	</router>
 </config>

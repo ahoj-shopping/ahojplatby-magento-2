@@ -9,9 +9,9 @@ define(
         'use strict';
         rendererList.push(
             {
-                type: 'ahojpay',
-                component: 'Ahoj_Ahojpay/js/view/payment/method-renderer/ahojpay-method'
-            }
+                type: 'rozlozto',
+                component: 'Ahoj_Ahojpay/js/view/payment/method-renderer/rozlozto-method'
+            },
         );
         return Component.extend({});
     }

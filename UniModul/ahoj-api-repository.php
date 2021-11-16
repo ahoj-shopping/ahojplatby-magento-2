@@ -8,6 +8,7 @@ class AhojApiRepository
     const GET_APPLICATION_URL_URL = '/eshop/application/{contractNumber}/application-url';
     const GET_APPLICATION_INFO_URL = '/eshop/application/{contractNumber}';
     const GET_PROMOTIONS_URL = '/eshop/{businessPlace}/calculation/promotions';
+    const POST_CALCULATION_URL = '/eshop/{businessPlace}/calculation/';
 
     private $baseApiUrlMap = array(
         'dev' => 'https://api.test.psws.xyz',
@@ -41,25 +42,24 @@ class AhojApiRepository
         );
     }
 
-    private function getBaseUrl()
+    function httpPostCalculation($applicationRequest, $businessPlace)
     {
-        if (array_key_exists($this->mode, $this->baseApiUrlMap)) {
-            return $this->baseApiUrlMap[$this->mode];
-        }
-        return $this->baseApiUrlMap['prod'];
-    }
+        $url = $this->getBaseUrl() . str_replace('{businessPlace}', $businessPlace, self::POST_CALCULATION_URL);
+        $postDataEncoded = json_encode($applicationRequest);
 
-    private function initCurl()
-    {
-        $apiKey = $this->eshopKey;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Accept: application/json',
-            "API_KEY: $apiKey",
-        ));
-        return $ch;
+        $ch = $this->initCurl();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postDataEncoded);
+        $responseBody = curl_exec($ch);
+        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $responseDecoded = json_decode($responseBody, true);
+        curl_close($ch);
+
+        return array(
+            'body' => $responseDecoded,
+            'code' => $responseCode,
+        );
     }
 
     function httpGetApplicationInfo($contractNumber)
@@ -98,6 +98,24 @@ class AhojApiRepository
         );
     }
 
+    function httpGetPromotions($businessPlace)
+    {
+        $promotionUrl = str_replace('{businessPlace}', $businessPlace, self::GET_PROMOTIONS_URL);
+        $url = $this->getBaseUrl() . $promotionUrl;
+
+        $ch = $this->initCurl();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $responseBody = curl_exec($ch);
+        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $responseDecoded = json_decode($responseBody, true);
+        curl_close($ch);
+
+        return array(
+            'body' => $responseDecoded,
+            'code' => $responseCode,
+        );
+    }
+
     /**
      * private
      */
@@ -127,21 +145,24 @@ class AhojApiRepository
         return $queryStr;
     }
 
-    function httpGetPromotions($businessPlace)
+    private function getBaseUrl()
     {
-        $promotionUrl = str_replace('{businessPlace}', $businessPlace, self::GET_PROMOTIONS_URL);
-        $url = $this->getBaseUrl() . $promotionUrl;
+        if (array_key_exists($this->mode, $this->baseApiUrlMap)) {
+            return $this->baseApiUrlMap[$this->mode];
+        }
+        return $this->baseApiUrlMap['prod'];
+    }
 
-        $ch = $this->initCurl();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $responseBody = curl_exec($ch);
-        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $responseDecoded = json_decode($responseBody, true);
-        curl_close($ch);
-
-        return array(
-            'body' => $responseDecoded,
-            'code' => $responseCode,
-        );
+    private function initCurl()
+    {
+        $apiKey = $this->eshopKey;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            "API_KEY: $apiKey",
+        ));
+        return $ch;
     }
 }

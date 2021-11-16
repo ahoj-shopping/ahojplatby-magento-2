@@ -4,8 +4,11 @@ namespace Ahoj\Ahojpay\Cron;
 
 class Ahoj
 {
-
-    /* info o beziacom crone */
+    /**
+     * Info o beziacom crone
+     *
+     * @return $this
+     */
     public function execute()
     {
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/cron.log');

@@ -9,5 +9,8 @@
 		<method name="ahojpay">
 			<allow_multiple_address>1</allow_multiple_address>
 		</method>
+        <method name="rozlozto">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
 	</methods>
 </payment>

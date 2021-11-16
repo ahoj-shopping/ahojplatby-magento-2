@@ -41,6 +41,13 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'CallBack URL'
                 )
                 ->addColumn(
+                    'payment',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    '255',
+                    [],
+                    'Typ platobnej brany'
+                )
+                ->addColumn(
                     'status',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     '255',

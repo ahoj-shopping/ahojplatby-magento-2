@@ -10,11 +10,10 @@
                 <img class="payment-icon" data-bind="attr: { src: require.toUrl('Ahoj_Ahojpay/images/ahoj.svg'), alt: $t('Ahoj Platby') }" height="55" style="vertical-align: middle; margin-left: 18px" width="70" />
             </span>
         </label>
-
 	</div>
 	<div class="payment-method-content">
 		<label class="label" data-bind="attr: {'for': getCode()}"></label>
-		<p id="product-banner-wrapper-ahojplatby"><span data-bind="text: getInstructions()"></span></p>
+		<p id="product-banner-wrapper-rozlozto"><span data-bind="text: getInstructions()"></span></p>
 		<!-- ko foreach: getRegion('messages') -->
 		<!-- ko template: getTemplate() --><!-- /ko -->
 		<!--/ko-->

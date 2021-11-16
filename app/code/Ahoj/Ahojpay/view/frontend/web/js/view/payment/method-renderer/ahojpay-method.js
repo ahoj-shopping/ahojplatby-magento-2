@@ -39,11 +39,14 @@ define(
 			},
 			getInstructions: function(){
                 var totals = quote.getTotals();
-                console.log(totals);
                 var promotionInfo = checkoutConfig.promotioninfo;
                 ahojpay.init(checkoutConfig.promotioninfo);
-				ahojpay.paymentMethodDescription(totals, '#product-banner-wrapper');
+                ahojpay.paymentMethodDescription(totals, '#product-banner-wrapper-ahojplatby', 'DP_DEFER_IT');
 			},
+            getTitle: function () {
+                let paymentMethods = checkoutConfig.ahojPaymentMethods;
+                return paymentMethods[0].description;
+            },
 			placeOrder: function (data, event) {
 				if (event) {
 					event.preventDefault();
