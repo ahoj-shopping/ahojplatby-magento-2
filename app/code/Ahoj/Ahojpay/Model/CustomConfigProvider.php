@@ -2,7 +2,9 @@
 
 namespace Ahoj\Ahojpay\Model;
 
-class CustomConfigProvider extends \Magento\Payment\Model\Method\AbstractMethod
+use Magento\Checkout\Model\ConfigProviderInterface;
+
+class CustomConfigProvider implements ConfigProviderInterface
 {
 
     protected $ahojpay;

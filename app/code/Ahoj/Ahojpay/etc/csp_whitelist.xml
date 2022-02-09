@@ -7,14 +7,12 @@
                 <value id="ahojpay-script-eshop" type="host">https://eshop.ahojsplatky.sk</value>
                 <value id="ahojpay-script-pilot" type="host">https://eshop.pilot.ahojsplatky.sk</value>
                 <value id="ahojpay-script-gtm" type="host">*.googletagmanager.com</value>
-                <value id="ahojpay-script-habi" type="host">*.habitable.co</value>
             </values>
         </policy>
         <policy id="connect-src">
             <values>
                 <value id="ahojpay-connect-eshop" type="host">https://eshop.ahojsplatky.sk</value>
                 <value id="ahojpay-connect-pilot" type="host">https://eshop.pilot.ahojsplatky.sk</value>
-                <value id="ahojpay-connect-habi" type="host">*.habitable.co</value>
             </values>
         </policy>
         <policy id="style-src">

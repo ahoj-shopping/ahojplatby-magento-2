@@ -26,7 +26,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getMode()
     {
-        return 'dev';
         if ($this->getAhojpayConfig('payment/ahojpay/isTest') == 1) {
             return "test";
         }

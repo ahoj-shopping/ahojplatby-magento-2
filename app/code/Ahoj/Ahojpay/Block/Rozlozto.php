@@ -229,7 +229,12 @@ class Rozlozto extends Template
         }
 
         $explode_applicationUrl = explode("?", $applicationUrl);
-        $callbackUrl = str_replace("https://eshop.pilot.ahojsplatky.sk", $this->_eshopData->getStoreUrl(), $explode_applicationUrl[0]);
+        if ($this->_ahojHelper->getMode() == 'prod') {
+            $callbackUrl = str_replace("https://eshop.ahojsplatky.sk", $this->_eshopData->getStoreUrl(), $explode_applicationUrl[0]);
+        } else {
+            $callbackUrl = str_replace("https://eshop.pilot.ahojsplatky.sk", $this->_eshopData->getStoreUrl(), $explode_applicationUrl[0]);
+        }
+
         $contract_number = explode("dp/ziadost/", $callbackUrl);
         $this->_dataBlock->insertOrder((int)$applicationParams['orderNumber'], $contract_number[1], "DRAFT", $payment_type);
         return $applicationUrl;
