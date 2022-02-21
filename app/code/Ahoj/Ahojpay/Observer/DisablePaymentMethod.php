@@ -48,12 +48,12 @@ class DisablePaymentMethod implements ObserverInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
 
-        $grandTotal = $cart->getQuote()->getGrandTotal();
+        $subtotalWithDiscount = $cart->getQuote()->getSubtotalWithDiscount();
         $checkResult = $observer->getEvent()->getResult();
         $checkResult->setData('is_available', true);
 
         //
-        if ($this->_ahojpay->getPromotionInfo() && $this->_ahojpay->isAvailable($grandTotal)) {
+        if ($this->_ahojpay->getPromotionInfo() && $this->_ahojpay->isAvailable($subtotalWithDiscount)) {
             if ($observer->getEvent()->getMethodInstance()->getCode() == "ahojpay") {
                 $checkResult = $observer->getEvent()->getResult();
                 $checkResult->setData('is_available', true);
@@ -66,7 +66,7 @@ class DisablePaymentMethod implements ObserverInterface
         }
 
         //
-        if ($this->_ahojpay->getPromotionInfo() && $this->_rozlozto->isAvailable($grandTotal)) {
+        if ($this->_ahojpay->getPromotionInfo() && $this->_rozlozto->isAvailable($subtotalWithDiscount)) {
             if ($observer->getEvent()->getMethodInstance()->getCode() == "rozlozto") {
                 $checkResult = $observer->getEvent()->getResult();
                 $checkResult->setData('is_available', true);
