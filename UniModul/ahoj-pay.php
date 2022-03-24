@@ -817,11 +817,6 @@ class AhojPay
             }
         }
 
-        // add delivery costs
-        if (isset($applicationParameters['product']['goodsDeliveryCosts'])) {
-            $totalPrice += $applicationParameters['product']['goodsDeliveryCosts'];
-        }
-
         return $totalPrice;
     }
 
