@@ -52,7 +52,7 @@ define(
             },
             getTitle: function () {
                 let paymentMethods = checkoutConfig.ahojPaymentMethods;
-                return paymentMethods[1].description;
+                return paymentMethods[1].name;
             },
             getData: function () {
                 let data = {

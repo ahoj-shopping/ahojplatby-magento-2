@@ -45,7 +45,7 @@ define(
 			},
             getTitle: function () {
                 let paymentMethods = checkoutConfig.ahojPaymentMethods;
-                return paymentMethods[0].description;
+                return paymentMethods[0].name;
             },
 			placeOrder: function (data, event) {
 				if (event) {
