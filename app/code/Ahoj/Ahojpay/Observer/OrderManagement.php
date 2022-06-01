@@ -95,10 +95,15 @@ class OrderManagement implements ObserverInterface
 
                 $explode_billing = explode(" ", $order->getBillingAddress()->getStreet()[0]);
                 $street_billing = "";
-                for ($i = 0; $i < sizeof($explode_billing) - 1; $i++) {
-                    $street_billing = $street_billing . " " . $explode_billing[$i];
-                }
-                $number_billing = $explode_billing[sizeof($explode_billing) - 1];
+								$number_billing = "";
+								if (sizeof($explode_billing) > 1) {
+									for ($i = 0; $i < sizeof($explode_billing) - 1; $i++) {
+											$street_billing = $street_billing . " " . $explode_billing[$i];
+										}
+									$number_billing = $explode_billing[sizeof($explode_billing) - 1];
+								} else {
+									$street_billing = $explode_billing[0];
+								}
 
                 $applicationParams = array(
                     "orderNumber" => $this->eshopData->getLastOrderId(),
